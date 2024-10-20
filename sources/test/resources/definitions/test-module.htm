@@ -1,0 +1,25 @@
+
+<beans-import src="hello-world.htm" beans-as="mod" type="html"></beans-import>
+
+<div beans-as="a-first-bean" beans-usetag="table">
+    <div beans-ref="cc">cc</div>
+    aa */
+    <!--comment-->
+    <div beans-body></div>
+    <script>
+        /**
+         *
+         */
+        console.log('Hello world')
+        $context.a = 'a'
+    </script>
+</div>
+
+<div beans-as="b-bean">
+    <!--comment-->
+    bb
+</div>
+
+<mod.double-hello-world beans-as="hello-world">
+    <h1>Hello World</h1>
+</mod.double-hello-world>

@@ -1,0 +1,30 @@
+{
+  "name": "vanilla-beans",
+  "version": "1.0.0",
+  "description": "Thin layer on top of HTML and DOM API, dramatically simplify development of SPA in Vanilla Js style.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krieven/vanilla-beans.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "HTML",
+    "Vanilla Js",
+    "Component",
+    "Composite",
+    "DOM",
+    "CustomElements",
+    "ShadowDom",
+    "SPA"
+  ],
+  "author": "krieven",
+  "license": "MIT",
+  "devDependencies": {
+    "@xmldom/xmldom": "0.8.10",
+    "express": "^4.18.2",
+    "webpack": "^5.90.1"
+  }
+}
