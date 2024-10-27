@@ -2,7 +2,7 @@
   "name": "vanilla-beans",
   "version": "1.0.0",
   "description": "Thin layer on top of HTML and DOM API, dramatically simplify development of SPA in Vanilla Js style.",
-  "main": "index.js",
+  "main": "index.mjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/krieven/vanilla-beans.git"
