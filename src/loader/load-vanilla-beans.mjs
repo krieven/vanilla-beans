@@ -1,6 +1,5 @@
 //@ts-check
-import htmlDomParser from "../parser/html-dom-parser.mjs";
-import parser from "../parser/parser.mjs";
+import parse from "../parser/html-dom-parser.mjs";
 import path from "../path.mjs";
 import prepare from "../factory/prepare-module.mjs";
 import xhr from "./xhr.mjs";
@@ -13,17 +12,14 @@ import factory from "../factory/factory.mjs";
  * @param {string} src URI
  * @param {(factory?: Factory) => void} onReady callback
  */
-export default function vanillaBeans(src, onReady) {
+export default function loadVanillaBeans(src, onReady) {
     src = path.normalize(src)
     load(src, 'html', [], function () {
         onReady(factory(src))
     })
 }
 
-var parse = parser(htmlDomParser).parse
-
 var loadHandler = {}
-var readyHandler = {}
 
 var status = {}, WAITING = 1, RESOLVING = 2, READY = 3
 var loaded = {}
@@ -46,8 +42,8 @@ function load(src, type, way, onReady) {
         return
     }
     //recursion
-    if (status[src] && way.indexOf(src) > -1) {
-        console.warn('recursion detected!', src, 'already in path', '\n' + way.join('\n'))
+    if (way.indexOf(src) > -1) {
+        console.warn('Recursion detected! "%s" already in path\n%s', src, way.join('\n'))
         onReady()
         return
     }
@@ -67,7 +63,6 @@ function load(src, type, way, onReady) {
 
     status[src] = WAITING
     loadHandler[src] = []
-    readyHandler[src] = []
     xhr(src, function (/** @type {string | undefined} */ error, /** @type {string} */ response) {
         if (error) {
             throw new Error(error)
@@ -120,9 +115,6 @@ function resolve(module, way, onReady) {
  */
 function fireReady(src, onReady) {
     status[src] = READY
-    while (readyHandler[src] && readyHandler[src].length) {
-        readyHandler[src].shift()();
-    }
     onReady()
 }
 
@@ -131,3 +123,5 @@ function fireLoaded(src) {
         loadHandler[src].shift()();
     }
 }
+
+window['loadBeans'] = loadVanillaBeans

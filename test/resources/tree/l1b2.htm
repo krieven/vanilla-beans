@@ -3,8 +3,48 @@
 
 <div beans-as="root">
     <h1>Hi man!1 2</h1>
+    <video>навсегда</video>
     <ul>
         <l2b2.root></l2b2.root>
         <l2b3.root></l2b3.root>
     </ul>
+    <my-super-table></my-super-table>
+</div>
+
+--пример использования beans-tagname
+<table beans-as="my-super-table" style="width:100%">
+    <tbody beans-tagname="beans-iterator" beans-usetag="tbody" beans-ref="table">
+
+        <!-- здесь нельзя использовать "table-row" в имени тэга -->
+        <tr beans-tagname="table-row" style="color:brown; font-size:large; font-weight: bold;"></tr>
+        why not??
+        <table-row class="my-class"></table-row>
+
+        эта темплета будет исключена, как и эта надпись :))
+        <tr></tr>
+
+    </tbody>
+    <script>
+        this.onBeanMount = function () {
+            $ref.table.beanUpdate([1, 2, 3, 4, 5])
+            console.log(this.fullTagName, 'mounted')
+        }
+    </script>
+</table>
+
+--пример использования beans-tagname
+<div beans-as="table-row" beans-tagname="tr">
+    <div beans-tagname="td" beans-ref="index">1</div>
+    <div beans-tagname="td">2</div>
+    <div beans-tagname="td">3</div>
+    <script>
+        const {index} = $ref
+        this.onBeanUpdate = function (item) {
+            index.innerText = item
+        }
+    </script>
+</div>
+
+<div beans-as="video">
+    Кино отменяется
 </div>

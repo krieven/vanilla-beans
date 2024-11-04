@@ -1,85 +1,84 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="./js/index.js" type="module"></script>
-    </head>
-    <body>
-        <div id="sources" style="display: none">
 
-<H1>beans library</H1>
+<head>
+    <script src="./js/index.js" type="module"></script>
+</head>
 
-<script type="javascript">
-    //optional declaration of stub attributes (for static code analysis)
-    const $appContext = {}
-    const $factory = {create:(tag, attributes, children)=>{return {}}}
-    const $ref = {}
-    const require = (src) => {return {}}
-</script>
+<body>
+    <div id="sources" style="display: none">
 
-<beans-import src="hello-world" beans-as="mod" type="html"></beans-import>
-<beans-import src="./hh/mod.js" beans-as="mod.js" type="js"></beans-import>
+        <H1>beans library</H1>
 
-<div beans-as="a-first-bean" beans-usetag="table">
-    <div beans-ref="cc">cc</div>
-    aa */
-    <!--comment-->
-    <built-in.slot beans-ref="n1">
-        slot content
+        <beans-import src="hello-world" beans-as="mod" type="html"></beans-import>
+        <beans-import src="./hh/mod.js" beans-as="mod.js" type="js"></beans-import>
 
-    </built-in.slot>
-    <script type="javascript">
-        /**
-            *
-            */
-        console.log('Hello world')
+        <div beans-as="a-first-bean" beans-usetag="table">
+            <div beans-ref="cc">cc</div>
+            aa */
+            <!--comment-->
+            <built-in.slot beans-ref="n1">
+                slot content
 
-        $appContext,a ='a'
-    </script>
-</div>
+            </built-in.slot>
+            <script type="javascript">
+                /**
+                    *
+                    */
+                console.log('Hello world')
 
-<div beans-as="b-bean">
-    <!--comment-->
-    bb
-</div>
-
-<mod.inner beans-as="c-bean">
-    bb
-</mod.inner>
-
-<mod.double-hello-world beans-as="hello-">
-    <h1>Hello World</h1>
-</mod.double-hello-world>
-
+                $appContext,a ='a'
+            </script>
         </div>
-        <div id="hello-world" style="display: none;">
 
-any one can be placed between components definitions,
-
-##hello-world component
-<div beans-as="hello-world">
-    <h1 beans-body></h1>
-    <beans-shadow shadowrootmode="open" beans-style>
-        Hey ho
-    </beans-shadow>
-    <input beans-ref="input" placeholder="type your name here">
-    <h2>Hello <span beans-ref="name">Anonimous</span>!</h2>
-    <script type="javascript">
-        $ref.input.oninput = function (e) {
-            this.beanUpdate($ref.input.value);
-        }.bind(this);
-
-        this.onBeanUpdate = function (data) {
-            $ref.name.innerText = data || 'Anonimous';
-        };
-    </script>
-</div>
-
-##root of app
-<div beans-as="double-hello-world">
-    <hello-world beans-ref="first">Hello first</hello-world>
-    <hr>
-    <hello-world beans-ref="second">Hello second</hello-world>
-</div>
+        <div beans-as="b-bean">
+            <!--comment-->
+            bb
         </div>
-    </body>
+
+        <mod.inner beans-as="c-bean">
+            bb
+        </mod.inner>
+
+        <mod.double-hello-world beans-as="hello-">
+            <h1>Hello World</h1>
+        </mod.double-hello-world>
+
+    </div>
+    <div id="hello-world" style="display: none;">
+
+        any one can be placed between components definitions,
+
+        ##hello-world component
+        <div beans-as="hello-world" beans-shadow="
+        mode = closed;
+        delegatesFocus = true;
+        ">
+            <h1 beans-body></h1>
+            <beans-shadow shadowrootmode="open" beans-style>
+                Hey ho
+            </beans-shadow>
+            <input beans-ref="input" placeholder="type your name here">
+            <h2>Hello <span beans-ref="name">Anonimous</span>!</h2>
+            <script type="javascript">
+                $ref.input.oninput = function (e) {
+                    this.beanUpdate($ref.input.value);
+                }.bind(this);
+
+                this.onBeanUpdate = function (data) {
+                    $ref.name.innerText = data || 'Anonimous';
+                };
+            </script>
+        </div>
+
+        ##root of app
+        <div beans-as="double-hello-world">
+            <div beans-body></div>
+            <hello-world beans-ref="first">Hello first</hello-world>
+            <hr>
+            <hello-world beans-ref="second">Hello second</hello-world>
+        </div>
+    </div>
+</body>
+
 </html>

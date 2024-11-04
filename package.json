@@ -1,14 +1,15 @@
 {
   "name": "vanilla-beans",
   "version": "1.0.0",
-  "description": "Thin layer on top of HTML and DOM API, dramatically simplify development of SPA in Vanilla Js style.",
+  "description": "Thin layer on top of HTML and DOM API, dramatically simplify development of SPA in VanillaJs style.",
   "main": "index.mjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/krieven/vanilla-beans.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node build.js"
   },
   "keywords": [
     "HTML",

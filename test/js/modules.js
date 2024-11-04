@@ -1,8 +1,7 @@
 //@ ts-check
-import vanillaBeans from '../../sources/loader/loadVanillaBeans.mjs'
 
 console.time('1')
-vanillaBeans('./resources/tree/root.htm', function (factory) {
+loadBeans('./resources/tree/root.htm', function (factory) {
     console.timeEnd('1')
     console.log('Final ready 1')
     console.time('2')

@@ -13,6 +13,7 @@ interface CJSModule {
 interface CSSModule {
     style:string, 
     src:string, 
+    evaluated?: CSSStyleSheet,
     imports?:{}
 }
 
