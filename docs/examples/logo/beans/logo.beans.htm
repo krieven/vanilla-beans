@@ -1,0 +1,135 @@
+<beans-import beans-as="flower" src="../cjs/flower.js" type="cjs"></beans-import>
+<beans-import beans-as="utils" src="../../cjs/utils.js" type="cjs"></beans-import>
+
+<main beans-as="screen">
+    <h1>Make your Vanilla flower</h1>
+    <form>
+        <label><input type="number" beans-ref="size" value="170"> enter flower size</label>
+        <label><input type="number" beans-ref="petal" value="100"> enter petal radius</label>
+        <label><input type="number" beans-ref="dot" value="10"> enter dot size</label>
+        <label><input type="number" beans-ref="weight" value="5"> enter line width</label>
+        <hr>
+        <label><input type="number" beans-ref="rotate" value="10"> rotate flower</label>
+        <label><input type="number" beans-ref="scale" value="150"> scale flower</label>
+        <hr>
+        <label><input type="color" beans-ref="color" value="#ff6600">
+            choose flower color
+            <span class="bold" beans-ref="strokeColor"></span>
+        </label>
+        <label><input type="color" beans-ref="background" value="#ffffff">
+            choose environment color
+            <span class="bold" beans-ref="backgroundColor"></span>
+        </label>
+        <button type="reset" beans-ref="reset">reset</button>
+    </form>
+
+    <div class="box">
+        <div beans-ref="environment">
+            <logo beans-ref="logo"></logo>
+        </div>
+        <div beans-ref="logoSize"></div>
+    </div>
+
+    <script>
+        {
+            const { size, petal, dot, weight, rotate, scale, color, strokeColor, background, backgroundColor, reset, environment, logo, logoSize } = $ref;
+
+            function getData() {
+                return {
+                    size: size.value * 1,
+                    radius: petal.value * 1,
+                    dot: dot.value * 1,
+                    weight: weight.value * 1,
+                    color: strokeColor.innerText = color.value,
+                    rotate: rotate.value || 0,
+                    scale: scale.value / 100 || 1
+                }
+            }
+
+            function callback(size) {
+                logoSize.innerText = size + ' x ' + size
+            }
+
+            const presets = getData(),
+                bgcolor = background.value
+
+
+            reset.onclick = () => {
+                backgroundColor.innerText = environment.style.backgroundColor = bgcolor
+                strokeColor.innerText = presets.color
+
+                logo.beanUpdate(presets, callback)
+            },
+
+                (
+                    size.oninput =
+                    petal.oninput =
+                    dot.oninput =
+                    weight.oninput =
+                    background.oninput =
+                    color.oninput =
+                    rotate.oninput =
+                    scale.oninput =
+                    function () {
+
+                        backgroundColor.innerText = environment.style.backgroundColor = background.value
+
+                        logo.beanUpdate(getData(), callback)
+
+                    }
+                )()
+        }
+    </script>
+</main>
+
+<svg beans-as="logo" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <g beans-ref="container">
+        <path beans-ref="path" fill="transparent"></path>
+        <circle beans-ref="dot" fill="transparent"></circle>
+    </g>
+
+    <script>
+        // <![CDATA[
+        {
+            const { container, path, dot } = $ref
+
+            this.onBeanUpdate = function (data, callback) {
+
+                const size = data.size + data.weight * 2
+                const width = (size * data.scale).toFixed(0)
+                const center = size / 2
+
+                callback(width)
+
+                const { setAttributes } = require('utils')
+
+                const pathD = require('flower')(data.size, data.radius, data.weight)
+
+                setAttributes(this, {
+                    'width': width,
+                    'height': width
+                })
+
+                setAttributes(path, {
+                    'd': pathD,
+                    'stroke': data.color,
+                    'stroke-width': data.weight
+                })
+
+                setAttributes(dot, {
+                    'cx': center,
+                    'cy': center,
+                    'r': data.dot / 2,
+                    'stroke': data.color,
+                    'stroke-width': data.weight
+                })
+
+                container.setAttribute('transform',
+                    `rotate(${data.rotate} ${center * data.scale}, ${center * data.scale}) scale(${data.scale})`
+                )
+            }
+        }
+        // ]]>
+
+    </script>
+</svg>

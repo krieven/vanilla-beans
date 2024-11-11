@@ -2,7 +2,7 @@ export default {
 
     resolve: function (current, nextPart) {
         nextPart = nextPart || ''
-        if (nextPart.substr(0) === '/') return this.normalize(nextPart)
+        if (nextPart.substr(0, 1) === '/' || nextPart.split('://')[1]) return this.normalize(nextPart)
         current = nextPart ? this.dirname(current) : current
         return this.normalize(current + nextPart)
     },
@@ -18,13 +18,11 @@ export default {
         var res = [parts[0]];
         for (var i = 1; i < parts.length; i++) {
             var part = parts[i];
-            if (part == '.' || part === '') {
+            if (part == '.') {
                 continue;
             }
-            if (part == '..') {
-                parts[i - 1] = parts[i] = '.';
+            if (part == '..' && res.length) {
                 res.pop();
-                i -= 2;
                 continue;
             }
             res.push(part);

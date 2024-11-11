@@ -2,6 +2,7 @@
 
 import NS from './ns.mjs'
 import probe from '../probe.mjs'
+import strtouppar from '../strtouppar.mjs'
 
 /**
  */
@@ -74,7 +75,7 @@ function create(ns, tag, attributes, children, appContext, moduleSrc, rootRef) {
 
     var result
 
-    var def = builtins[tag.toUpperCase()] || searchBean(moduleSrc, tag.toUpperCase())
+    var def = builtins[strtouppar(tag)] || searchBean(moduleSrc, strtouppar(tag))
     if (def && def.create) {
         return def.create(ns, tag, attributes, children, appContext, moduleSrc, rootRef)
     }
@@ -82,18 +83,18 @@ function create(ns, tag, attributes, children, appContext, moduleSrc, rootRef) {
         var beanattr = mix(mix({}, def.bean.a), attributes)
         var beanRef = {}
         result = create(ns, def.bean.t, beanattr, def.bean.c, appContext, def.src, beanRef)
-        // @ts-ignore
-        result.fullTagName = tag
         initNode(result, def.bean, appContext, factory(moduleSrc), beanRef, moduleSrc)
     } else {
-        var usetag = attributes[NS.USETAG] || tag
-        var shadow = attributes[NS.SHADOW]
-        var style = attributes[NS.STYLE]
-        result = ns && ns !== 'html' && document.createElementNS(ns, usetag) || document.createElement(usetag)
+        var usetag = attributes[NS.USE] || tag
+        var shadow = attributes[NS.SDW]
+        var style = attributes[NS.STL]
+        result = ns && document.createElementNS(ns, usetag) || document.createElement(usetag)
         try {
-            result.beanContentBody = shadow && result.attachShadow(toShadowOptions(shadow)) || result
+            var shadowRoot = shadow && result.attachShadow(toShadowOptions(shadow))
+            shadowRoot && setProperty(result, '_SDW', shadowRoot, true, true) //костыляем, ибо mode=closed не даст добраться до el.shadowRoot, а нам надо
+            result._BODY = shadow && shadowRoot || result
             shadow && style &&
-                addStyles(result.beanContentBody, style.toUpperCase().split(';'), moduleSrc)
+                addStyles(result._BODY, strtouppar(style).replace(/\s+/g, '').split(';'), moduleSrc)
         } catch (e) {
             console.error(e)
         }
@@ -163,14 +164,15 @@ function mix(trg, mixin, dontOverride, freeze) {
  * @param {PropertyKey} name
  * @param {any} value
  * @param {undefined | boolean} [freeze]
+ * @param {boolean | undefined} [hide]
  */
-function setProperty(on, name, value, freeze) {
+function setProperty(on, name, value, freeze, hide) {
     if (typeof value === 'undefined') return
     Object.defineProperty(on, name, {
         value: value,
         writable: !freeze,
         configurable: !freeze,
-        enumerable: true
+        enumerable: !hide
     })
 }
 
@@ -182,7 +184,7 @@ function setProperty(on, name, value, freeze) {
 function setAttributes(instance, attr, clean) {
     if (attr && instance && instance.setAttribute) {
         for (var key in attr) {
-            if (clean && key.startsWith(NS.NS)) continue
+            if (clean && key.startsWith && key.startsWith(NS.NS)) continue
             instance.setAttribute(key, attr[key])
         }
     }
@@ -201,7 +203,7 @@ var handlers = {
 
     beanMount: function (parent, before) {
         this.beanUnmount()
-        var target = (parent && parent.beanContentBody || parent)
+        var target = (parent && parent._BODY || parent._SDW || parent)
         if (!target || !target.appendChild) return
         (before && target.insertBefore(this, before)) ||
             (before === 0 && target.insertBefore(this, target.firstChild)) ||
@@ -219,7 +221,7 @@ var handlers = {
                 child.onBeanUnmount && child.onBeanUnmount()
             })
         }
-        this.parentElement && this.parentElement.removeChild(this)
+        this.parentNode && this.parentNode.removeChild(this)
         return this
     },
     beanStart: function () {
@@ -236,20 +238,22 @@ var handlers = {
         this.onBeanUpdate && this.onBeanUpdate(data, options, additional)
     },
     beanDestroy: function () {
-        while (this.childNodes && this.childNodes.length > 0) {
-            (this.childNodes[0].beanDestroy && this.childNodes[0].beanDestroy()) ||
-                (this.childNodes[0].beanDestroy = handlers.beanDestroy) && this.childNodes[0].beanDestroy()
+        var node = this._SDW || this
+        while (node.childNodes && node.childNodes.length > 0) {
+            (node.childNodes[0].beanDestroy && node.childNodes[0].beanDestroy()) ||
+                (node.childNodes[0].beanDestroy = handlers.beanDestroy) && node.childNodes[0].beanDestroy()
         }
         this.onBeanStop && this.onBeanStop()
         this.onBeanUnmount && this.onBeanUnmount()
         this.onBeanDestroy && this.onBeanDestroy()
-        this.parentElement && this.parentElement.removeChild(this)
+        this.parentNode && this.parentNode.removeChild(this)
         return true
     }
 }
 
 function walkUp(node, foreach) {
     foreach(node)
+    node = node._SDW || node
     if (!node.childNodes) return
     for (var i = 0; i < node.childNodes.length; i++) {
         walkUp(node.childNodes[i], foreach)
@@ -262,9 +266,9 @@ function walkUp(node, foreach) {
 function isConnected(node) {
     if (typeof node.isConnected !== 'undefined') return node.isConnected
     var test = node
-    while (test.parentElement) {
-        if (test.parentElement === factory.document.documentElement) return true
-        test = test.parentElement
+    while (test.parentNode) {
+        if (test.parentNode === factory.document.documentElement) return true
+        test = test.parentNode
     }
     return false
 }
@@ -278,9 +282,9 @@ function initNode(result, bean, appContext, generator, ref, moduleSrc) {
 function factoryRequire(moduleSrc) {
     return function (moduleKey) {
         try {
-            return modules[modules[moduleSrc].imports[moduleKey].src].evaluated
+            return modules[modules[moduleSrc].imports[strtouppar(moduleKey)].src].evaluated
         } catch (error) {
-            throw new Error('CJS module "' + moduleKey + '" was not found in "' + moduleSrc + '"')
+            throw new Error('CJSModule "' + moduleKey + '" was not found in "' + moduleSrc + '"')
         }
     }
 }
@@ -297,7 +301,7 @@ function createChildren(ns, result, children, appContext, moduleSrc, rootRef) {
     var document = factory.document
 
     // @ts-ignore
-    var currentContentBody = result.beanContentBody || result
+    var currentContentBody = result._BODY || result
     var beanContentBody = currentContentBody
 
     children.forEach(function (item) {
@@ -305,7 +309,7 @@ function createChildren(ns, result, children, appContext, moduleSrc, rootRef) {
         // @ts-ignore потому что здесь как раз проверяется тип
         if (!item.t) {
             // @ts-ignore потому что здесь может быть только строка
-            (result.beanContentBody || result).appendChild(document.createTextNode(item))
+            (result._BODY || result).appendChild(document.createTextNode(item))
             return
         }
 
@@ -316,12 +320,12 @@ function createChildren(ns, result, children, appContext, moduleSrc, rootRef) {
         ref && setProperty(rootRef, ref, child, true)
 
         // @ts-ignore
-        beanContentBody = (typeof getA(item, NS.BODY) !== 'undefined') && child || beanContentBody
+        beanContentBody = (typeof getA(item, NS.BDY) !== 'undefined') && child || beanContentBody
 
         currentContentBody.appendChild(child)
     })
     // @ts-ignore
-    result.beanContentBody = beanContentBody
+    result._BODY = beanContentBody
     return currentContentBody.childNodes
 }
 
@@ -349,6 +353,7 @@ function toShadowOptions(shadow) {
 function addStyles(result, styles, moduleSrc) {
     var sheets = []
     styles.forEach(function (key) {
+        if (!key) return
         var imp = modules[moduleSrc].imports[key]
         if (imp && imp.type === 'css') {
             if (modules[imp.src].evaluated) {
@@ -356,8 +361,8 @@ function addStyles(result, styles, moduleSrc) {
                 return
             }
             var attr = {}
-            attr[NS.STYLE] = key
-            result.appendChild(builtins[NS.STYLE.toUpperCase()].create(null, '', attr, [], {}, moduleSrc))
+            attr[NS.STL] = key
+            result.appendChild(builtins[strtouppar(NS.STL)].create(null, '', attr, [], {}, moduleSrc))
         } else {
             console.error('CSSModule %s was not found in %s', key, moduleSrc)
         }
@@ -368,13 +373,15 @@ function addStyles(result, styles, moduleSrc) {
 /**
  * required attribute: beans-style
  */
-builtins[NS.STYLE.toUpperCase()] = {
+builtins[strtouppar(NS.STL)] = {
     create: function (ns, tag, attributes, children, appContext, moduleSrc, rootRef) {
         var document = factory.document
         var result = document.createElement('style')
-        var imp = probe(function () { return modules[moduleSrc].imports[attributes[NS.STYLE].split(';')[0].toUpperCase()] }).or()
+        var imp = probe(function () {
+            return strtouppar(modules[moduleSrc].imports[attributes[NS.STL].split(';')[0]])
+        }).or()
         if (!imp || imp.type !== 'css') {
-            console.error('CSSModule %s was not found in %s', attributes[NS.STYLE], moduleSrc)
+            console.error('CSSModule %s was not found in %s', attributes[NS.STL], moduleSrc)
             return result
         }
         var style = modules[imp.src] && modules[imp.src].style || ''
@@ -383,14 +390,14 @@ builtins[NS.STYLE.toUpperCase()] = {
     }
 }
 
-builtins[NS.NS.toUpperCase() + 'ITERATOR'] = {
+builtins[strtouppar(NS.NS) + 'ITERATOR'] = {
     create: function (ns, tag, attributes, templates, appContext, moduleSrc, rootRef) {
         templates = templates && templates.filter(function (templ, i) {
-            if (!searchBean(moduleSrc, templ.t && templ.t.toUpperCase())) {
+            if (!searchBean(moduleSrc, strtouppar(templ.t))) {
                 console.warn(
-                    'Tag "%s" is not defined in "%s", template[%d] will be ignored', 
-                    templ.t, 
-                    moduleSrc, 
+                    'Bean "%s" is not defined in "%s", template[%d] will be ignored',
+                    templ.t,
+                    moduleSrc,
                     i
                 )
                 return false
@@ -399,7 +406,10 @@ builtins[NS.NS.toUpperCase() + 'ITERATOR'] = {
         })
 
         var result = create(ns, 'div', attributes, [], appContext, moduleSrc)
-        setProperty(result, 'beanUpdate', function (data, options) {
+        setProperty(result, 'beanUpdate', function (data, options, additional) {
+
+            this.onBeanUpdate && this.onBeanUpdate(data, options, additional)
+
             var children = this.children
             var r = 0
             while (r < data.length || r < children.length) {
@@ -438,7 +448,7 @@ builtins[NS.NS.toUpperCase() + 'ITERATOR'] = {
  * 
  * no attributes required
  */
-builtins[NS.NS.toUpperCase() + 'FRAGMENT'] = {
+builtins[strtouppar(NS.NS) + 'FRAGMENT'] = {
     create: function (ns, tag, attributes, children, appContext, moduleSrc, rootRef) {
         var result = new DocumentFragment();
         rootRef = rootRef || {};

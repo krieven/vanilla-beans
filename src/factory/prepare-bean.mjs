@@ -1,5 +1,6 @@
 import NS from './ns.mjs'
 import { attrToObj } from './utils.mjs'
+import strtouppar from '../strtouppar.mjs'
 
 /**
  * 
@@ -16,14 +17,14 @@ export default function prepareBean(node, src, root, hideSourceURL) {
         return text && text.trim() && text || undefined
     }
 
-    var tagname = node.getAttribute(NS.TAGNAME)
+    var tagname = node.getAttribute(NS.TAG)
 
     var def = { t: (tagname || node.tagName), a: attrToObj(node.attributes) }
 
     var nodes = node.childNodes || []
     for (let i = 0; i < nodes.length; i++) {
         var child = nodes[i]
-        if (child.tagName && child.tagName.toUpperCase() === 'SCRIPT') {
+        if (strtouppar(child.tagName) === 'SCRIPT') {
             if (!root && !def.script) {
                 def.script = child.textContent || child.innerHTML || child.innerText || ''
             }

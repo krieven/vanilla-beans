@@ -16,31 +16,38 @@
     <tbody beans-tagname="beans-iterator" beans-usetag="tbody" beans-ref="table">
 
         <!-- здесь нельзя использовать "table-row" в имени тэга -->
-        <tr beans-tagname="table-row" style="color:brown; font-size:large; font-weight: bold;"></tr>
-        why not??
-        <table-row class="my-class"></table-row>
-
-        эта темплета будет исключена, как и эта надпись :))
-        <tr></tr>
+        <tr beans-tagname="table-row" style="background-color:bisque;"></tr>
 
     </tbody>
     <script>
         this.onBeanMount = function () {
-            $ref.table.beanUpdate([1, 2, 3, 4, 5])
-            console.log(this.fullTagName, 'mounted')
+            $ref.table.beanUpdate([
+                [1, 2, 3, 4, 5],
+                [1, 2, 3, 4, 5],
+                [1, 2, 3, 4, 5],
+                [1, 2, 3, 4, 5]
+            ], {})
+            console.log('my-super-table', 'mounted')
         }
     </script>
 </table>
 
---пример использования beans-tagname
-<div beans-as="table-row" beans-tagname="tr">
-    <div beans-tagname="td" beans-ref="index">1</div>
-    <div beans-tagname="td">2</div>
-    <div beans-tagname="td">3</div>
+<beans-iterator beans-as="table-row" beans-usetag="tr">
+    <my-item beans-usetag="td"></my-item>
     <script>
-        const {index} = $ref
-        this.onBeanUpdate = function (item) {
-            index.innerText = item
+        this.onBeanUpdate = function (data, options, index) {
+            this.style.backgroundColor = index % 2 ? void 0 : '#ffcccc'
+            options && (options.row = index)
+        }
+    </script>
+</beans-iterator>
+
+<div beans-as="my-item">
+    <script>
+        this.onBeanUpdate = function (data, options, index) {
+            this.style.backgroundColor = index %2 ? void 0 : '#ccffcc'
+
+            this.innerText = data*options.row+index
         }
     </script>
 </div>

@@ -1,6 +1,6 @@
 
 interface Factory {
-    with: (context?: any) => FactoryInitiated | undefined
+    with: (context?: any) => FactoryInitiated
 }
 
 interface CJSModule {
@@ -21,17 +21,14 @@ interface FactoryInitiated {
     create: (
         tag: string, 
         attributes?:{
-            [attributeName:string]: String
-        },
-        children?: [
-            BeanDescriptor | string
-        ]) => Node,
+            [name:string]: string
+        }) => Element
 }
 
 interface BeanDescriptor {
     t: string,
     a?: {
-        [attributeName: string]: string
+        [name: string]: string
     },
     c?: [BeanDescriptor | string],
     script?: string,
@@ -56,4 +53,19 @@ interface BeansModule {
         }
     },
     src: string
+}
+
+interface BeanInstance extends Element {
+
+    beanMount: (target: Node, before: Node | number) => void,
+    beanUnmount: () => void,
+
+    beanStart: () => void,
+    beanStop: () => void,
+
+    beanDestroy: () => void,
+
+    beanUpdate: (data: any, options: any, additional: any) => void,
+
+    
 }

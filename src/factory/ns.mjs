@@ -2,12 +2,12 @@ var NS = 'beans-'
 
 export default {
     AS: NS + 'as',
-    TAGNAME: NS + 'tagname',
-    USETAG: NS + 'usetag',
+    TAG: NS + 'tagname',
+    USE: NS + 'usetag',
     REF: NS + 'ref',
-    BODY: NS + 'body',
-    SHADOW: NS + 'shadow',
-    STYLE: NS + 'style',
-    IMPORT: NS + 'import',
+    BDY: NS + 'body',
+    SDW: NS + 'shadow',
+    STL: NS + 'style',
+    IMP: NS + 'import',
     NS: NS
 }

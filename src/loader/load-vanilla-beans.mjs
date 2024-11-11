@@ -1,5 +1,5 @@
 //@ts-check
-import parse from "../parser/html-dom-parser.mjs";
+import parse from "./html-dom-parser.mjs";
 import path from "../path.mjs";
 import prepare from "../factory/prepare-module.mjs";
 import xhr from "./xhr.mjs";
@@ -13,7 +13,10 @@ import factory from "../factory/factory.mjs";
  * @param {(factory?: Factory) => void} onReady callback
  */
 export default function loadVanillaBeans(src, onReady) {
-    src = path.normalize(src)
+    var origin = document.location.origin
+    var base = document.baseURI
+    var url = base.substring(0, origin.length) === origin ? base.substring(origin.length) : base
+    src = path.resolve(url, src)
     load(src, 'html', [], function () {
         onReady(factory(src))
     })
@@ -123,5 +126,3 @@ function fireLoaded(src) {
         loadHandler[src].shift()();
     }
 }
-
-window['loadBeans'] = loadVanillaBeans

@@ -2,6 +2,7 @@ import prepareBean from './prepare-bean.mjs'
 import path from '../path.mjs'
 import { attrToObj } from './utils.mjs'
 import NS from './ns.mjs'
+import strtouppar from '../strtouppar.mjs'
 
 /**
  * 
@@ -40,8 +41,8 @@ export default function prepare(source, src, type, hideSourceURL) {
         var attributes = attrToObj(node.attributes)
         var as = attributes && attributes[NS.AS]
         if (!as) continue
-        as = as.toUpperCase()
-        if (node.tagName.toLowerCase() === NS.IMPORT) {
+        as = strtouppar(as)
+        if (node.tagName.toLowerCase() === NS.IMP) {
             var holder = result.imports
             if (holder[as]) {
                 throw new Error('Dublicate of import key "' + as + '" declaration defined in ' + src)
