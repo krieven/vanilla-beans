@@ -2,7 +2,7 @@ import prepareBean from './prepare-bean.mjs'
 import path from '../path.mjs'
 import { attrToObj } from './utils.mjs'
 import NS from './ns.mjs'
-import strtouppar from '../strtouppar.mjs'
+import strtoupper from '../strtoupper.mjs'
 
 /**
  * 
@@ -41,17 +41,17 @@ export default function prepare(source, src, type, hideSourceURL) {
         var attributes = attrToObj(node.attributes)
         var as = attributes && attributes[NS.AS]
         if (!as) continue
-        as = strtouppar(as)
+        as = strtoupper(as)
         if (node.tagName.toLowerCase() === NS.IMP) {
             var holder = result.imports
             if (holder[as]) {
-                throw new Error('Dublicate of import key "' + as + '" declaration defined in ' + src)
+                throw new Error('Dublicate of import key "%s" declaration defined in "%s"', as,  src)
             }
-            holder[as] = { src: path.resolve(src, attributes['src']), type: attributes['type'] }
+            holder[as] = { src: path.resolve(src, attributes.src), type: attributes.type }
             continue
         }
         if (result.beans[as]) {
-            throw new Error('Not unique Bean name "' + as + '" defined in module "' + src + '"')
+            throw new Error('Not unique Bean name "%s" defined in module "%s"', as, src)
         }
         result.beans[as] = prepareBean(node, src, undefined, hideSourceURL)
     }

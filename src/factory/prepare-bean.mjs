@@ -1,11 +1,11 @@
 import NS from './ns.mjs'
 import { attrToObj } from './utils.mjs'
-import strtouppar from '../strtouppar.mjs'
+import strtoupper from '../strtoupper.mjs'
 
 /**
  * 
- * @param {ChildNode} node 
- * @param {string} src 
+ * @param {ChildNode} node
+ * @param {string} src
  * @param {ChildNode? | undefined} root
  * @returns {}
  */
@@ -24,7 +24,7 @@ export default function prepareBean(node, src, root, hideSourceURL) {
     var nodes = node.childNodes || []
     for (let i = 0; i < nodes.length; i++) {
         var child = nodes[i]
-        if (strtouppar(child.tagName) === 'SCRIPT') {
+        if (strtoupper(child.tagName) === 'SCRIPT') {
             if (!root && !def.script) {
                 def.script = child.textContent || child.innerHTML || child.innerText || ''
             }

@@ -2,7 +2,8 @@
 
 import NS from './ns.mjs'
 import probe from '../probe.mjs'
-import strtouppar from '../strtouppar.mjs'
+import strtoupper from '../strtoupper.mjs'
+import {startsWith} from '../startswith.mjs'
 
 /**
  */
@@ -75,7 +76,7 @@ function create(ns, tag, attributes, children, appContext, moduleSrc, rootRef) {
 
     var result
 
-    var def = builtins[strtouppar(tag)] || searchBean(moduleSrc, strtouppar(tag))
+    var def = builtins[strtoupper(tag)] || searchBean(moduleSrc, strtoupper(tag))
     if (def && def.create) {
         return def.create(ns, tag, attributes, children, appContext, moduleSrc, rootRef)
     }
@@ -94,7 +95,7 @@ function create(ns, tag, attributes, children, appContext, moduleSrc, rootRef) {
             shadowRoot && setProperty(result, '_SDW', shadowRoot, true, true) //костыляем, ибо mode=closed не даст добраться до el.shadowRoot, а нам надо
             result._BODY = shadow && shadowRoot || result
             shadow && style &&
-                addStyles(result._BODY, strtouppar(style).replace(/\s+/g, '').split(';'), moduleSrc)
+                addStyles(result._BODY, strtoupper(style).replace(/\s+/g, '').split(';'), moduleSrc)
         } catch (e) {
             console.error(e)
         }
@@ -184,7 +185,7 @@ function setProperty(on, name, value, freeze, hide) {
 function setAttributes(instance, attr, clean) {
     if (attr && instance && instance.setAttribute) {
         for (var key in attr) {
-            if (clean && key.startsWith && key.startsWith(NS.NS)) continue
+            if (clean && startsWith(key, NS.NS)) continue
             instance.setAttribute(key, attr[key])
         }
     }
@@ -282,7 +283,7 @@ function initNode(result, bean, appContext, generator, ref, moduleSrc) {
 function factoryRequire(moduleSrc) {
     return function (moduleKey) {
         try {
-            return modules[modules[moduleSrc].imports[strtouppar(moduleKey)].src].evaluated
+            return modules[modules[moduleSrc].imports[strtoupper(moduleKey)].src].evaluated
         } catch (error) {
             throw new Error('CJSModule "' + moduleKey + '" was not found in "' + moduleSrc + '"')
         }
@@ -362,7 +363,7 @@ function addStyles(result, styles, moduleSrc) {
             }
             var attr = {}
             attr[NS.STL] = key
-            result.appendChild(builtins[strtouppar(NS.STL)].create(null, '', attr, [], {}, moduleSrc))
+            result.appendChild(builtins[strtoupper(NS.STL)].create(null, '', attr, [], {}, moduleSrc))
         } else {
             console.error('CSSModule %s was not found in %s', key, moduleSrc)
         }
@@ -373,12 +374,12 @@ function addStyles(result, styles, moduleSrc) {
 /**
  * required attribute: beans-style
  */
-builtins[strtouppar(NS.STL)] = {
+builtins[strtoupper(NS.STL)] = {
     create: function (ns, tag, attributes, children, appContext, moduleSrc, rootRef) {
         var document = factory.document
         var result = document.createElement('style')
         var imp = probe(function () {
-            return strtouppar(modules[moduleSrc].imports[attributes[NS.STL].split(';')[0]])
+            return strtoupper(modules[moduleSrc].imports[attributes[NS.STL].split(';')[0]])
         }).or()
         if (!imp || imp.type !== 'css') {
             console.error('CSSModule %s was not found in %s', attributes[NS.STL], moduleSrc)
@@ -390,10 +391,10 @@ builtins[strtouppar(NS.STL)] = {
     }
 }
 
-builtins[strtouppar(NS.NS) + 'ITERATOR'] = {
+builtins[strtoupper(NS.NS) + 'ITERATOR'] = {
     create: function (ns, tag, attributes, templates, appContext, moduleSrc, rootRef) {
         templates = templates && templates.filter(function (templ, i) {
-            if (!searchBean(moduleSrc, strtouppar(templ.t))) {
+            if (!searchBean(moduleSrc, strtoupper(templ.t))) {
                 console.warn(
                     'Bean "%s" is not defined in "%s", template[%d] will be ignored',
                     templ.t,
@@ -448,7 +449,7 @@ builtins[strtouppar(NS.NS) + 'ITERATOR'] = {
  * 
  * no attributes required
  */
-builtins[strtouppar(NS.NS) + 'FRAGMENT'] = {
+builtins[strtoupper(NS.NS) + 'FRAGMENT'] = {
     create: function (ns, tag, attributes, children, appContext, moduleSrc, rootRef) {
         var result = new DocumentFragment();
         rootRef = rootRef || {};

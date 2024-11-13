@@ -4,6 +4,7 @@ import path from "../path.mjs";
 import prepare from "../factory/prepare-module.mjs";
 import xhr from "./xhr.mjs";
 import factory from "../factory/factory.mjs";
+import { startsWith } from "../startswith.mjs";
 
 /**
  * Загружает модуль со всеми зависимостями и отдаёт в коллбэк фабрику,
@@ -15,7 +16,7 @@ import factory from "../factory/factory.mjs";
 export default function loadVanillaBeans(src, onReady) {
     var origin = document.location.origin
     var base = document.baseURI
-    var url = base.substring(0, origin.length) === origin ? base.substring(origin.length) : base
+    var url = startsWith(base, origin) ? base.substring(origin.length) : base
     src = path.resolve(url, src)
     load(src, 'html', [], function () {
         onReady(factory(src))
