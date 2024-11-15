@@ -333,7 +333,13 @@ function createChildren(ns, result, children, appContext, moduleSrc, rootRef) {
 /**
  * 
  * @param {string} shadow 
- * @returns {any}
+ * @returns {{ 
+ *     mode: string, 
+ *     clonable: boolean, 
+ *     delegatesFocus: boolean, 
+ *     serializable: boolean, 
+ *     slotAssignment: string
+ * }}
  */
 function toShadowOptions(shadow) {
     var result = { mode: 'open', clonable: false, delegatesFocus: false, serializable: false, slotAssignment: 'named' }
@@ -357,8 +363,18 @@ function addStyles(result, styles, moduleSrc) {
         if (!key) return
         var imp = modules[moduleSrc].imports[key]
         if (imp && imp.type === 'css') {
-            if (modules[imp.src].evaluated) {
-                sheets.push(modules[imp.src].evaluated)
+            var cssmod = modules[imp.src] || {}
+            if(cssmod.evaluated === undefined) {
+                try {
+                    var sheet = new CSSStyleSheet()
+                    sheet.replace(cssmod.style)
+                    cssmod.evaluated = sheet
+                } catch (e) {
+                    cssmod.evaluated = false
+                }
+            }
+            if (cssmod.evaluated) {
+                sheets.push(cssmod.evaluated)
                 return
             }
             var attr = {}
@@ -379,7 +395,7 @@ builtins[strtoupper(NS.STL)] = {
         var document = factory.document
         var result = document.createElement('style')
         var imp = probe(function () {
-            return strtoupper(modules[moduleSrc].imports[attributes[NS.STL].split(';')[0]])
+            return modules[moduleSrc].imports[strtoupper(attributes[NS.STL]).split(';')[0]]
         }).or()
         if (!imp || imp.type !== 'css') {
             console.error('CSSModule %s was not found in %s', attributes[NS.STL], moduleSrc)

@@ -45,7 +45,7 @@ interface BeanDescriptor {
 
 interface BeansModule {
     beans: {
-        [beanAs: string]: BeanDescriptor,
+        [name: string]: BeanDescriptor,
     },
     imports?: {
         [moduleKey: string]: {

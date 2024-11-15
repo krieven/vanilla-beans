@@ -38,10 +38,12 @@ export default function prepareBean(node, src, root, hideSourceURL) {
     }
 
     !root && node.outerHTML && !hideSourceURL && (
-        def.script = '/\*' + (node.outerHTML + '').replace(def.script, '...').replace('*/', '*\\/') + ' \*\/ '
+        def.script = '/\*' + (node.outerHTML + '').replace('*/', '*\\/') + ' \*\/ '
         + (def.script || '')
         + '\n\n//# sourceURL=vanilla-beans:///' + src + '/<' + (def.a && def.a[NS.AS] || '') + '>'
-    ) && (def.init = new Function('$context, $factory, $ref, document, require', def.script))
+    ) 
+    
+    def.init = def.script && new Function('$context, $factory, $ref, document, require', def.script)
 
     return def
 }

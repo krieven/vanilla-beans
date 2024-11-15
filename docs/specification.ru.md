@@ -65,7 +65,8 @@
     with: ($context: any) => {
         create: (
             tag: string, 
-            attributes: {[name]: string}) => BeanNode | Element
+            attributes: {[name]: string}
+        ) => BeanInstance | Element
     }
 }
 ```

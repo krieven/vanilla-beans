@@ -21,6 +21,7 @@
     "ShadowDom",
     "SPA"
   ],
+  "types":"src/VanillaBeans.d.ts",
   "author": "krieven",
   "license": "MIT",
   "devDependencies": {

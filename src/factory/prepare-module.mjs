@@ -23,13 +23,7 @@ export default function prepare(source, src, type, hideSourceURL) {
             return { script: source, src: src, evaluated: evaluated }
         }
         if (type === 'css') {
-            return {style: source, src: src, evaluated: (function () {
-                    try {
-                        var sheet = new CSSStyleSheet()
-                        sheet.replace(source)
-                        return sheet
-                    } catch (ignore) { }
-                })()}
+            return {style: source, src: src}
         }
         return
     }

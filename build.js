@@ -1,16 +1,18 @@
 const webpack = require('webpack')
 const path = require('path')
+// const beansBuilder = import(path.resolve('src/builder/builder.mjs'))
 
 
-console.log(__dirname, 'dist/')
+
+console.log(__dirname, 'bundles/')
 const wpconfig = [
     {
         mode: 'production',
-        name: 'vanillaBeans',
+        name: 'loadVanillaBeans',
         target: 'web',
         entry: './src/loader/load-vanilla-beans.mjs',
         output: {
-          path: path.resolve(__dirname, './dist/'),
+          path: path.resolve(__dirname, './bundles/'),
           filename: 'load-vanilla-beans.global.js',
           environment: {
             arrowFunction:false
@@ -28,7 +30,7 @@ const wpconfig = [
         target: 'web',
         entry: './src/factory/factory.mjs',
         output: {
-          path: path.resolve(__dirname, './dist/'),
+          path: path.resolve(__dirname, './bundles/'),
           filename: 'vanilla-beans-factory.global.js',
           environment: {
             arrowFunction:false
