@@ -28,6 +28,7 @@ export default async function (src, dest) {
 
         console.log('resolve', src)
 
+
         const buffer = fs.readFileSync(src, { flag: 'r' }).toString()
 
         const beansModule = prepare(parse(buffer), src, type || 'html', true)
@@ -45,6 +46,8 @@ export default async function (src, dest) {
             const key = '/*script*/'
             replaces[key] = `(function(){ var module = {}; ${beansModule.script}; return module.exports; })()`
             delete beansModule.script
+            const key = '##/script/'
+            replaces[key] = `(function(){ var module = {}; ${script}; return module.exports; })()`
             beansModule.evaluated = key
         } else if (type === 'css') {
             beansModule.style = beansModule.style.replace(/\/\*[\s\S]*?\*\//gm, ' ').replace(/\s+/g, ' ')
@@ -97,3 +100,9 @@ export default async function (src, dest) {
     fs.writeFileSync(dest, min.code, { flag: 'w+' })
 }
 
+        return vanillaBeansFactory
+    })()
+
+    `, { flag: 'w+' })
+
+}
