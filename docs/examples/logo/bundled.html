@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bundled</title>
+        <script type="module">
+            import bundle from './generated/logo.beans.js'
+            bundle.with({}).create('screen').beanMount(document.body)
+        </script>
+    </head>
+    <body></body>
+</html>

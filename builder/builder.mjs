@@ -1,14 +1,18 @@
 import fs from 'fs'
 import parser from './parser.mjs'
 import { DOMParser } from '@xmldom/xmldom'
-import prepare from '../src/factory/prepare-module.mjs'
+import prepare from '../lib/factory/prepare-module.mjs'
 import path from 'path'
+import { minify } from 'terser'
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const parse = parser(new DOMParser({ type: 'html' })).parse
 
 //@ts-check
 
-export default function (src, dest) {
+export default async function (src, dest) {
     const modules = {}
     const index = []
 
@@ -24,7 +28,6 @@ export default function (src, dest) {
 
         console.log('resolve', src)
 
-
         const buffer = fs.readFileSync(src, { flag: 'r' }).toString()
 
         const beansModule = prepare(parse(buffer), src, type || 'html', true)
@@ -39,20 +42,19 @@ export default function (src, dest) {
         const replaces = {}
 
         if (type === 'cjs') {
-            const script = beansModule.script
+            const key = '/*script*/'
+            replaces[key] = `(function(){ var module = {}; ${beansModule.script}; return module.exports; })()`
             delete beansModule.script
-            const key = '##/script/'
-            replaces[key] = `(function(){ var module = {}; ${script}; return module.exports; })()`
             beansModule.evaluated = key
         } else if (type === 'css') {
-            beansModule.style = beansModule.style.replace(/\s+/g, ' ')
+            beansModule.style = beansModule.style.replace(/\/\*[\s\S]*?\*\//gm, ' ').replace(/\s+/g, ' ')
         } else {
             beansModule.beans && Object.keys(beansModule.beans).forEach(
                 (key) => {
                     const bean = beansModule.beans[key]
                     if (bean.script) {
                         delete bean.script
-                        const skey = key + '/init/'
+                        const skey = key + '/*init*/'
                         replaces[skey] = bean.init.toString()
                         bean.init = skey
                     }
@@ -71,12 +73,11 @@ export default function (src, dest) {
 
         modules[src] = convert
 
-        result.push(
-            convert
-        )
+        result.push(convert)
     }
 
     loadTree(src)
+
     try {
         if (!fs.existsSync(path.dirname(dest))) {
             fs.mkdirSync(path.dirname(dest));
@@ -85,23 +86,14 @@ export default function (src, dest) {
         console.error(err);
     }
 
-    console.dir(import.meta)
+    const factory = fs.readFileSync(
+        path.resolve(__dirname, '../bundles/vanilla-beans-factory.global.js')
+    ).toString()
 
-    const factory=fs.readFileSync(path.resolve('bundles/vanilla-beans-factory.global.js')).toString()
+    const min = await minify(`export default (function() { ${factory}; [${result.join(', ')}]` +
+        '.forEach(function(module) {vanillaBeansFactory.put(module);});' +
+        'return vanillaBeansFactory("0");})();')
 
-    fs.writeFileSync(dest, `export default (function() {
-        
-        ${factory}
-
-        [ ${result.join(', ')} ].forEach(
-            function(module) {
-                vanillaBeansFactory.put(module)
-            }
-        )
-
-        return vanillaBeansFactory
-    })()
-         
-    `, { flag: 'w+' })
-
+    fs.writeFileSync(dest, min.code, { flag: 'w+' })
 }
+

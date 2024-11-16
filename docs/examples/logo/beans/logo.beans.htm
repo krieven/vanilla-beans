@@ -4,13 +4,14 @@
 
 <main beans-as="screen">
     <h1>Make your Vanilla flower</h1>
+    <beans-style beans-style="style"></beans-style>
     <form>
         <label><input type="number" beans-ref="size"   value="100" autofocus> enter flower size</label>
         <label><input type="number" beans-ref="petal"  value="60">  enter petal radius</label>
-        <label><input type="number" beans-ref="dot"    value="16">  enter dot size</label>
-        <label><input type="number" beans-ref="weight" value="7">   enter line width</label>
+        <label><input type="number" beans-ref="dot"    value="7">   enter dot size</label>
+        <label><input type="number" beans-ref="weight" value="3">   enter line width</label>
         <hr>
-        <label><input type="number" beans-ref="rotate" value="10"> rotate flower</label>
+        <label><input type="number" beans-ref="rotate" value="10">  rotate flower</label>
         <label><input type="number" beans-ref="scale"  value="200"> scale flower</label>
         <hr>
         <label><input type="color"  beans-ref="color"  value="#ff6600">

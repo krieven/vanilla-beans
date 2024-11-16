@@ -31,12 +31,14 @@ form {
 .box {
     padding: 25px 50px 25px 50px;
 }
-
+/* this is a comment */
 label {
     display: block;
+    /* this is a comment */
     margin: 10px 0;
 }
 
 .bold {
     font-weight: bold;
 }
+/* this is a comment */

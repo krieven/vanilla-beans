@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="232" height="232">
-    <g transform="rotate(10 116, 116) scale(2)">
-        <path fill="transparent"
-            d="M 105.55282581475768 42.54915028125263 A 60 60 0 0 0 28.61073738537634 98.45084971874736 A 60 60 0 0 0 58 8 A 60 60 0 0 0 87.38926261462365 98.45084971874738 A 60 60 0 0 0 10.447174185242325 42.54915028125262 A 60 60 0 0 0 105.55282581475768 42.54915028125263 Z"
-            stroke="#ff6600" stroke-width="8"></path>
-        <circle fill="transparent" cx="58" cy="58" r="8" stroke="#ff6600" stroke-width="8"></circle>
-    </g>
-</svg>

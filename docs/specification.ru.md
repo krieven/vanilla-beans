@@ -85,9 +85,9 @@
 ## Состав библиотеки
 
 ### Модули
-- [factory/factory.mjs](../src/factory/factory.mjs) экспортирует по умолчанию фабричный метод **factory**, возвращающий экземпляр [Factory](#factory), принимает в качестве аргумента ключ (src) зарегистрированного модуля.
+- [factory/factory.mjs](../lib/factory/factory.mjs) экспортирует по умолчанию фабричный метод **factory**, возвращающий экземпляр [Factory](#factory), принимает в качестве аргумента ключ (src) зарегистрированного модуля.
 
-- [loader/load-vanilla-beans.mjs](../src/loader/load-vanilla-beans.mjs) асинхронный загрузчик модулей, имеет интерфейс
+- [loader/load-vanilla-beans.mjs](../lib/loader/load-vanilla-beans.mjs) асинхронный загрузчик модулей, имеет интерфейс
 ```
     (src: string, callback: (factory: Factory) => void) => void
 ```

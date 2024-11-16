@@ -1,6 +1,6 @@
-import parser from '../../src/parser/parser.mjs'
+import parser from '../../lib/parser/parser.mjs'
 import { DOMParser } from '@xmldom/xmldom'
-import prepare from '../../src/factory/prepare-module.mjs'
+import prepare from '../../lib/factory/prepare-module.mjs'
 
 import source from '../resources/definitions/test.module.mjs'
 
