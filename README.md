@@ -1,6 +1,6 @@
-# ![icon](./docs/flower.svg) vanilla-beans
+# <img src="./docs/flower.svg" style="float:left;margin-right:20px;"> vanilla-beans
 
->Thin layer on top of HTML and DOM API, dramatically simplify development of SPA using Vanilla Js style.
+Thin layer on top of HTML and DOM API, dramatically simplify development of SPA using Vanilla Js style.
 
 ## The HTML was created for this again
 **vanilla-beans** - a normalized library designed to develop user interfaces of any complexity and dynamism. Provides the ability to create your own components - **beans** and combine them into complex composites, directly using the capabilities of HTML, Javascript and DOM API.
@@ -12,15 +12,16 @@ The component declaration is: HTML for describing the structure of the component
 - The library is extremely lightweight and fast.
 - The component is described in the most obvious way for a bundle of HTML and Javascript.
 - Extremely easy to learn, knowledge of the basics of HTML, Javascript and DOM API is enough.
-- The component declaration can be understood without preparation by anyone familiar with these basics.
-
+- The component declaration can be understood by anyone familiar with these basics.
 - The library and the ideas it is built on are simple and obvious.
 
 # Features
 ## HTML-based Bean (UI component) declaration 
-## Bean can be created from any element, including SVG elements
+## Bean can extend any element type, including SVG
 ## Modules for organizing Bean declarations
-## CSS and CommonJs imports
 ## Lazy loading of modules
-## Shadow root for any element
-## adoptedStyleSheets in shadow root
+## CSS and CommonJs imports
+## Shadow root and adoptedStyleSheets for any Node
+## Any Object as Application Context
+## Freedom as a basic concept
+
