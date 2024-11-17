@@ -1,3 +1,4 @@
+![icon](./docs/favicon.png)
 # vanilla-beans
 >Thin layer on top of HTML and DOM API, dramatically simplify development of SPA using Vanilla Js style.
 

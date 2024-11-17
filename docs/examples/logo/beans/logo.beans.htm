@@ -1,26 +1,29 @@
 <beans-import beans-as="flower" src="../cjs/flower.js" type="cjs"></beans-import>
 <beans-import beans-as="utils" src="../../cjs/utils.js" type="cjs"></beans-import>
+<beans-import beans-as="style" src="../../../css/style.css" type="css"></beans-import>
 
 <main beans-as="screen">
     <h1>Make your Vanilla flower</h1>
+    <beans-style beans-style="style"></beans-style>
     <form>
-        <label><input type="number" beans-ref="size" value="170"> enter flower size</label>
-        <label><input type="number" beans-ref="petal" value="100"> enter petal radius</label>
-        <label><input type="number" beans-ref="dot" value="10"> enter dot size</label>
-        <label><input type="number" beans-ref="weight" value="5"> enter line width</label>
+        <label><input type="number" beans-ref="size"   value="100" autofocus> enter flower size</label>
+        <label><input type="number" beans-ref="petal"  value="60">  enter petal radius</label>
+        <label><input type="number" beans-ref="dot"    value="7">   enter dot size</label>
+        <label><input type="number" beans-ref="weight" value="3">   enter line width</label>
         <hr>
-        <label><input type="number" beans-ref="rotate" value="10"> rotate flower</label>
-        <label><input type="number" beans-ref="scale" value="150"> scale flower</label>
+        <label><input type="number" beans-ref="rotate" value="10">  rotate flower</label>
+        <label><input type="number" beans-ref="scale"  value="200"> scale flower</label>
         <hr>
-        <label><input type="color" beans-ref="color" value="#ff6600">
+        <label><input type="color"  beans-ref="color"  value="#ff6600">
             choose flower color
-            <span class="bold" beans-ref="strokeColor"></span>
+            <span class="bold"      beans-ref="strokeColor"></span>
         </label>
-        <label><input type="color" beans-ref="background" value="#ffffff">
+        <label><input type="color"  beans-ref="background" value="#ffffff">
             choose environment color
-            <span class="bold" beans-ref="backgroundColor"></span>
+            <span class="bold"      beans-ref="backgroundColor"></span>
         </label>
-        <button type="reset" beans-ref="reset">reset</button>
+        <hr>
+        <button type="reset"        beans-ref="reset">reset</button>
     </form>
 
     <div class="box">
@@ -32,7 +35,8 @@
 
     <script>
         {
-            const { size, petal, dot, weight, rotate, scale, color, strokeColor, background, backgroundColor, reset, environment, logo, logoSize } = $ref;
+            const { size, petal, dot, weight, rotate, scale,
+                color, strokeColor, background, backgroundColor, reset, environment, logo, logoSize } = $ref;
 
             function getData() {
                 return {
@@ -50,17 +54,16 @@
                 logoSize.innerText = size + ' x ' + size
             }
 
-            const presets = getData(),
-                bgcolor = background.value
-
+            const presets = getData()
+            const bgcolor = background.value
 
             reset.onclick = () => {
                 backgroundColor.innerText = environment.style.backgroundColor = bgcolor
                 strokeColor.innerText = presets.color
-
                 logo.beanUpdate(presets, callback)
-            },
+            }
 
+            {
                 (
                     size.oninput =
                     petal.oninput =
@@ -71,13 +74,11 @@
                     rotate.oninput =
                     scale.oninput =
                     function () {
-
                         backgroundColor.innerText = environment.style.backgroundColor = background.value
-
                         logo.beanUpdate(getData(), callback)
-
                     }
                 )()
+            }
         }
     </script>
 </main>
@@ -92,6 +93,7 @@
         // <![CDATA[
         {
             const { container, path, dot } = $ref
+            const { setAttributes } = require('utils')
 
             this.onBeanUpdate = function (data, callback) {
 
@@ -100,8 +102,6 @@
                 const center = size / 2
 
                 callback(width)
-
-                const { setAttributes } = require('utils')
 
                 const pathD = require('flower')(data.size, data.radius, data.weight)
 
@@ -125,11 +125,10 @@
                 })
 
                 container.setAttribute('transform',
-                    `rotate(${data.rotate} ${center * data.scale}, ${center * data.scale}) scale(${data.scale})`
+                    `rotate(${data.rotate} ${center * data.scale} ${center * data.scale}) scale(${data.scale})`
                 )
             }
         }
         // ]]>
-
     </script>
 </svg>

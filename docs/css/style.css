@@ -1,21 +1,25 @@
 * {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family:'Courier New', Courier, monospace;
+    box-sizing: border-box;
 }
-
 body {
     margin: 0 0 0 100px;
+    font-size: 16px;
 }
-
 h1 {
+    font-size: 40px;
+}
+h1, h2, h3, h4, h5, h6 {
     color: #ff6400;
 }
-
 form,
 .box {
     display: inline-block;
     vertical-align: top;
 }
-
+input, button{
+    width:70px;
+}
 form{
     width: 320px;
 }
@@ -27,12 +31,14 @@ form {
 .box {
     padding: 25px 50px 25px 50px;
 }
-
+/* this is a comment */
 label {
     display: block;
+    /* this is a comment */
     margin: 10px 0;
 }
 
 .bold {
     font-weight: bold;
 }
+/* this is a comment */

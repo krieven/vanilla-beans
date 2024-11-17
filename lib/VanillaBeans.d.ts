@@ -39,12 +39,13 @@ interface BeanDescriptor {
             [refId: string]: Node
         },
         document: Document,
-        require: (moduleKey: string) => any) => void
+        require: (moduleKey: string) => any
+    ) => void
 }
 
 interface BeansModule {
     beans: {
-        [beanAs: string]: BeanDescriptor,
+        [name: string]: BeanDescriptor,
     },
     imports?: {
         [moduleKey: string]: {
