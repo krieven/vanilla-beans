@@ -3,13 +3,26 @@
     box-sizing: border-box;
 }
 body {
-    margin: 0 0 0 100px;
+    margin: 0 50px 0 100px;
     font-size: 16px;
+}
+header {
+    display: block;
+    clear: both;
+    height:100px;
+    margin-bottom: 20px;
+}
+footer {
+    display: block;
+    clear: both;
+    height:100px;
+    margin-bottom: 20px;
+    text-align: right;
 }
 h1 {
     font-size: 40px;
 }
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, a {
     color: #ff6400;
 }
 form,
@@ -31,14 +44,13 @@ form {
 .box {
     padding: 25px 50px 25px 50px;
 }
-/* this is a comment */
+
 label {
     display: block;
-    /* this is a comment */
     margin: 10px 0;
 }
 
 .bold {
     font-weight: bold;
 }
-/* this is a comment */
+
