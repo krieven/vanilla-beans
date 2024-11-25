@@ -1,6 +1,6 @@
 {
   "name": "vanilla-beans",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Thin layer on top of HTML and DOM API, dramatically simplify development of SPA using Vanilla Js.",
   "main": "index.mjs",
   "repository": {

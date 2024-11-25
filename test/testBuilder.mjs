@@ -5,6 +5,6 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 builder(
-    path.resolve('docs/examples/logo/beans/logo.beans.htm'),
-    path.resolve('test/generated/logo.beans.js')
+    path.resolve(__dirname, '../docs/examples/logo/beans/logo.beans.htm'),
+    path.resolve(__dirname, '../test/generated/logo.beans.js')
 )
