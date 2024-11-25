@@ -1,9 +1,10 @@
 const express = require('express')
 
 const app = express()
+const port = 3000
 
 app.use('/', express.static(__dirname+'/../'))
 
-app.listen(3000)
+app.listen(port)
 
-console.log('listen 3000', __dirname+'/../')
+console.log('listen', port, __dirname+'/../')

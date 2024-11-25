@@ -35,9 +35,10 @@
 <beans-iterator beans-as="table-row" beans-usetag="tr">
     <my-item beans-usetag="td"></my-item>
     <script>
-        this.onBeanUpdate = function (data, options, index) {
+        this.transformBeanData = function (data, options, index) {
             this.style.backgroundColor = index % 2 ? void 0 : '#ffcccc'
             options && (options.row = index)
+            return data
         }
     </script>
 </beans-iterator>
@@ -45,9 +46,9 @@
 <div beans-as="my-item">
     <script>
         this.onBeanUpdate = function (data, options, index) {
-            this.style.backgroundColor = index %2 ? void 0 : '#ccffcc'
+            this.style.backgroundColor = index % 2 ? void 0 : '#ccffcc'
 
-            this.innerText = data*options.row+index
+            this.innerText = data * options.row + index
         }
     </script>
 </div>
