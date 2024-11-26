@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>table</title>
+        <script type="module">
+            import loadVanillaBeans from '../../../bundles/load-vanilla-beans.module.js'
+            console.time('render')
+            loadVanillaBeans('./beans/table.beans.htm', function(factory) {
+
+                factory.with({}).create('table-table').beanMount(document.body)
+
+                console.timeEnd('render')
+                
+            })
+        </script>
+    </head>
+    <body></body>
+</html>

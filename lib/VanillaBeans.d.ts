@@ -68,5 +68,12 @@ interface BeanInstance extends Element {
 
     beanUpdate: (data: any, options: any, additional: any) => void,
 
-    
+    onBeanMount?:  () => void,
+    onBeanUnmount?: () => void,
+    onBeanStart?: () => void,
+    onBeanStop?:  () => void,
+    onBeanUpdate?:  (data, options, additional) => void,
+    transformBeanData?: (data, options, additional) => any,
+    onBeanDestroy?:  () => void
+
 }

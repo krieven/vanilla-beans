@@ -1,0 +1,33 @@
+<beans-iterator beans-as="table-table" beans-usetag="table" style="width:60%;">
+    <beans-iterator beans-usetag="tr">
+        <table-cell></table-cell>
+    </beans-iterator>
+    <beans-iterator beans-usetag="tr" style="background-color: bisque;">
+        <table-cell></table-cell>
+    </beans-iterator>
+    <script>
+        this.beanUpdate([
+            ['hello', 0, 256, 1, 2, 3],
+            ['hello', 0, 256, 4, 5, 6],
+            ['hello', 0, 256, 7, 8, 9],
+            ['hello', 0, 256, 10, 11, 12],
+            ['hello', 0, 256, 1, 2, 3],
+            ['hello', 0, 256, 4, 5, 6],
+            ['hello', 0, 256, 7, 8, 9],
+            ['hello', 0, 256, 10, 11, 12],
+            ['hello', 0, 256, 1, 2, 3]
+        ])
+    </script>
+</beans-iterator>
+
+<div beans-as="table-cell" beans-usetag="td" style="border: 1px solid black;">
+    Cell value:
+    <beans-text beans-ref="cell">
+        cell number
+    </beans-text>
+    <script>
+        this.onBeanUpdate = (data) => {
+            $ref.cell.beanUpdate(data)
+        }
+    </script>
+</div>

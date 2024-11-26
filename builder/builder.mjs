@@ -91,7 +91,7 @@ export default async function (src, dest) {
     ).toString()
 
     const min = await minify(`export default (function() { ${factory}; [${result.join(', ')}]` +
-        '.forEach(function(module) {vanillaBeansFactory.put(module);});' +
+        '.forEach(function(m) {vanillaBeansFactory.put(m);});' +
         'return vanillaBeansFactory("0");})();')
 
     fs.writeFileSync(dest, min.code, { flag: 'w+' })

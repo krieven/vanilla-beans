@@ -1,7 +1,7 @@
 {
   "name": "vanilla-beans",
   "version": "1.0.0",
-  "description": "Thin layer on top of HTML and DOM API, dramatically simplify development of SPA in VanillaJs style.",
+  "description": "Thin layer on top of HTML and DOM API, dramatically simplify development of SPA using Vanilla Js.",
   "main": "index.mjs",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "express": "^4.18.2",
     "webpack": "^5.90.1"
   },
-  "dependencies": {
+  "optionalDependencies": {
     "@xmldom/xmldom": "0.8.10",
     "terser": "^5.36.0"
   }
