@@ -1,25 +1,68 @@
 * {
     font-family: 'Courier New', Courier, monospace;
     box-sizing: border-box;
+    background-color: ghostwhite;
 }
 
 body {
-    margin: 0 50px 0 100px;
     font-size: 16px;
+    margin:0;
 }
-
+header, footer, main {
+    padding-left: 100px;
+    padding-right: 100px;
+}
 header {
     display: block;
     clear: both;
     margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    background-color: inherit;
+    padding-top: 1px;
+}
+
+header>menu {
+    padding: 0 0 10px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: stretch;
+}
+
+header>menu>a {
+    font-size: larger;
 }
 
 footer {
     display: block;
     clear: both;
-    height: 100px;
-    margin-bottom: 20px;
     text-align: right;
+    position: sticky;
+    bottom: 0;
+    background-color: inherit;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+}
+
+
+main {
+    display: flex;
+    gap: 40px;
+    padding-top:0;
+}
+main menu {
+    padding: 0;
+    margin: 0;
+    position: sticky;
+    top:190px;
+}
+main menu>li {
+    white-space: nowrap;
+}
+main>section {
+
 }
 
 h1 {
@@ -34,45 +77,6 @@ h5,
 h6,
 a {
     color: #ff6400;
-}
-
-form,
-.box {
-    display: inline-block;
-    vertical-align: top;
-}
-
-form input,
-form button {
-    width: 70px;
-}
-
-form {
-    width: 320px;
-}
-
-form {
-    padding: 25px 50px 25px 0;
-}
-
-.box {
-    padding: 25px 50px 25px 50px;
-}
-
-label {
-    display: block;
-    margin: 10px 0;
-}
-
-.bold {
+    white-space: nowrap;
     font-weight: bold;
-}
-
-menu {
-    list-style-type: none;
-    display: flex;
-    padding: 0;
-    margin-bottom: 0;
-    gap: 1em;
-    flex-wrap: wrap;
 }

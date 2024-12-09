@@ -1,4 +1,4 @@
-# <img src="./flower.svg" style="float:left;margin-right:20px;"> VANILLA-BEANS
+# VANILLA-BEANS
 
 Thin layer on top of HTML and DOM API, dramatically simplify development of SPA using Vanilla Js style.
 

@@ -32,7 +32,7 @@
 ### Bean declaration
 Декларация бина - HTML разметка и (опционально) скрипт инициализации, описывающий поведение и обработчики событий жизненного цикла.
 
-Минимальая декларация бина на базе элемента DIV:
+Минимальная декларация бина на базе элемента DIV:
 
 ```html
 <div beans-as="my-bean"></div>
@@ -103,7 +103,7 @@
 ### Tags
 Добавлен только один тэг
 
-#### <a name="BEANS-IMPORT">&lt;BEANS-IMPORT&gt;</a> используется в [BeansModule declaration](#beansnodule-declaration)  для подключения зависимостей. должен располагаться на верхнем уровне декларации модуля. 
+#### &lt;BEANS-IMPORT&gt; используется в [BeansModule declaration](#beansnodule-declaration)  для подключения зависимостей. должен располагаться на верхнем уровне декларации модуля. 
 
 ```html
 --imports
@@ -163,7 +163,7 @@
 
 Пример декларации BeansModule с одним Bean, по имени "**root**" и теневым деревом.
 
-```xml
+```html
 -- импорты
 <beans-import type="css" beans-as="mystyle" src="../css/my-style.css"></beans-import>
 <beans-import type="css" beans-as="nextstyle" src="../css/next-style.css"></beans-import>
@@ -191,7 +191,7 @@
 
 - **[Init script](#init-script)**
     
-```xml
+```html
     </script>
 </div>
 ```
