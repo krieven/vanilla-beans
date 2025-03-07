@@ -212,42 +212,40 @@ Vanilla Bean в течении своей жизни проходит через
 - Демонтирование из документа - unmount
 - Уничтожение - destroy
 
-Для того, чтобы Bean мог реагировать на эти события предусмотрены хендлеры жизненного цикла
+Для того, чтобы Bean мог реагировать на эти события предусмотрены хендлеры жизненного цикла 
 
 - mount - 
-- unmount -
-- start -
-- stop -
-- update - 
-- drstroy -
-- create - 
-
-
 
 ```js
 beanMount: (target: Node, before?: Node | number) => void
 ```
-
+- unmount -
 ```ts
 beanUnmount: () => void
 ```
-
+- start -
 ```ts
 beanStart: () => void
 ```
 
+- stop -
 ```ts
 beanStop: () => void
 ```
 
+- update - 
 ```ts
-beanUpdate: (data?: any, options?: any, additional?: any) => void
+beanUpdate: (data: any, options?: any, additional?: any) => void
 ```
 
+- drstroy -
 ```ts
 beanDestroy: () => void
 ```
 
+- create - Для этого события нет специального хендлера, всё что нужно сделать при создании экземпляра Bean можно сделать в **Init script**, он вызывается автоматически, когда Вы вызываете
+
+factory.create('your-bean-name')
 
 
 ## Init script 

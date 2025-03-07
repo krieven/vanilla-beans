@@ -4,14 +4,14 @@ any text can be placed between components definitions,
 <div beans-as="hello-world" beans-shadow="mode=closed;delegatesFocus=true">
 	<h1 beans-body></h1>
 	<input beans-ref="input" placeholder="type your name here">
-	<h2>Hello <span beans-ref="name">Anonymous</span>!</h2>
+	<h2>Hello <beans-text beans-ref="name">Anonimous</beans-text>!</h2>
 	<script>
 		$ref.input.oninput = (e) => {
 			this.beanUpdate($ref.input.value)
 		}
 
 		this.onBeanUpdate = (data) => {
-			$ref.name.innerText = data || 'Anonimous'
+			$ref.name.textContent = data || 'Anonimous'
 		}
 	</script>
 </div>

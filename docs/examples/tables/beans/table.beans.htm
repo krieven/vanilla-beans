@@ -6,7 +6,7 @@
         <table-cell></table-cell>
     </beans-iterator>
     <script>
-        this.beanUpdate([
+        const data = [
             ['hello', 0, 256, 1, 2, 3],
             ['hello', 0, 256, 4, 5, 6],
             ['hello', 0, 256, 7, 8, 9],
@@ -16,7 +16,22 @@
             ['hello', 0, 256, 7, 8, 9],
             ['hello', 0, 256, 10, 11, 12],
             ['hello', 0, 256, 1, 2, 3]
-        ])
+        ]
+        this.beanUpdate(data)
+
+        setTimeout(() => {
+            this.beanUpdate()
+            setTimeout(() => {
+                this.beanUpdate([
+                    data[3], data[4], data[5], data[8]
+                ])
+                setTimeout(() => {
+                    this.beanUpdate(data)
+                }, 2000)
+            }, 2000)
+        }, 2000)
+
+
     </script>
 </beans-iterator>
 
