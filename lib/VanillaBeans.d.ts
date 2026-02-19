@@ -69,7 +69,7 @@ interface BeanSearchResult {
         children: (BeanDescriptor | string)[] | [], 
         appContext: any, 
         moduleSrc: string, 
-        rootRef?: {[key:string]:Node} | undefined
+        rootRef?: {[key:string]:Node} | undefined | null | void
     ) => Node
 }
 
