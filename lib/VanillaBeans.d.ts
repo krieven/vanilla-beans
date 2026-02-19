@@ -3,26 +3,40 @@ interface Factory {
     with: (context?: any) => FactoryInitiated
 }
 
-interface CJSModule {
-    script?: string, 
-    src: string, 
-    evaluated?: any, 
-    imports?:{}
+interface Module {
+    imports: {
+        [moduleKey: string]: {
+            type: 'html' | 'cjs' | 'css',
+            src: string
+        }
+    },
+    src: string
 }
 
-interface CSSModule {
-    style:string, 
-    src:string, 
-    evaluated?: CSSStyleSheet,
-    imports?:{}
+interface BeansModule extends Module {
+    beans: {
+        [name: string]: BeanDescriptor,
+    }
 }
+
+interface CJSModule extends Module {
+    script?: string, 
+    evaluated?: any
+}
+
+interface CSSModule extends Module {
+    style:string, 
+    evaluated?: CSSStyleSheet
+}
+
+interface AnyModule extends BeansModule, CJSModule, CSSModule{}
 
 interface FactoryInitiated {
     create: (
         tag: string, 
         attributes?:{
             [name:string]: string
-        }) => Element
+        }) => Node
 }
 
 interface BeanDescriptor {
@@ -40,21 +54,25 @@ interface BeanDescriptor {
         },
         document: Document,
         require: (moduleKey: string) => any
-    ) => void
+    ) => void,
+
 }
 
-interface BeansModule {
-    beans: {
-        [name: string]: BeanDescriptor,
-    },
-    imports?: {
-        [moduleKey: string]: {
-            type: 'html' | 'cjs' | 'css',
-            src: string
-        }
-    },
-    src: string
+interface BeanSearchResult {
+    src?: string, 
+    tag?: string, 
+    bean?: BeanDescriptor,
+    create?: (
+        ns:string | null | undefined,
+        tag:string, 
+        attributes:{[key:string]:string}, 
+        children: (BeanDescriptor | string)[] | [], 
+        appContext: any, 
+        moduleSrc: string, 
+        rootRef?: {[key:string]:Node} | undefined
+    ) => Node
 }
+
 
 interface BeanInstance extends Element {
 
@@ -72,8 +90,12 @@ interface BeanInstance extends Element {
     onBeanUnmount?: () => void,
     onBeanStart?: () => void,
     onBeanStop?:  () => void,
-    onBeanUpdate?:  (data, options, additional) => void,
-    transformBeanData?: (data, options, additional) => any,
+    onBeanUpdate?:  (data: any, options?: any, additional?: any) => void,
+    transformBeanData?: (data: any, options?: any, additional?: any) => any,
     onBeanDestroy?:  () => void
 
+}
+
+interface AnyProps {
+    [k:string]: string
 }
