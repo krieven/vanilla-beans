@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>_BODY test</title>
+    <script src="./js/body.js" type="module"></script>
+    <style>
+        * {
+            border:1px solid black;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        h3 {
+            color: lightgray;
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Просто элемент, который вставляется куда надо снаружи</h3>
+    <div id="element"></div>
+
+    <h3>Элемент с ShadowRoot в корне</h3>
+    <div id="rootShadow"></div>
+
+    <h3>Элемент с ShadowRoot в дочернем элементе</h3>
+    <div id="childShadow"></div>
+
+    <h3>Элемент с body в первом уровне</h3>
+    <div id="bodyFirst"></div>
+
+    <h3>Элемент с body во втором уровне</h3>
+    <div id="bodySecond"></div>
+
+    <h3>Элемент с body в котором есть body</h3>
+    <div id="bodyWithChld"></div>
+
+</body>
+
+</html>

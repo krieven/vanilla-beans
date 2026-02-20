@@ -1,0 +1,28 @@
+
+<div beans-as="root">
+    root
+    <element>
+        <h2>Просто элемент, который вставляется куда надо снаружи</h2>
+    </element>
+</div>
+
+<div beans-as="element">
+    element
+    <div>
+        <inner beans-body></inner>
+    </div>
+</div>
+
+<div beans-as="inner">
+    inner
+    <div beans-shadow="mode=open">
+        <deep beans-body></deep>
+    </div>
+</div>
+
+<div beans-as="deep" beans-shadow="mode=open">
+    deep
+    <div>
+        <div beans-body>надо чтобы здесь</div>
+    </div>
+</div>
